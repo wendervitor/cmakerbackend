@@ -9,11 +9,11 @@ var formidable = require('formidable');
 var Categoria  = require('./app/models/categoria');
 var Conexao    = require('./app/models/conexao');
 var Tutorial   = require('./app/models/tutorial');
-var imgPath = './uploads/teste.pdf';
+var imgPath    = './uploads/teste.pdf';
 
 
-mongoose.connect('mongodb://localhost:27017/cmakerdb');
-
+//mongoose.connect('mongodb://localhost:27017/cmakerdb');
+mongoose.connect('mongodb://heroku_qlx4cvd6@ds111565.mlab.com:11565/heroku_qlx4cvd6');
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
