@@ -13,10 +13,14 @@ var imgPath    = './uploads/teste.pdf';
 
 
 //mongoose.connect('mongodb://localhost:27017/cmakerdb');
-mongoose.connect('mongodb://heroku_qlx4cvd6@ds111565.mlab.com:11565/heroku_qlx4cvd6');
+//mongoose.connect('mongodb://heroku_qlx4cvd6@ds111565.mlab.com:11565/heroku_qlx4cvd6?authMode=scram-sha1&rm.tcpNoDelay=true');
+mongoose.connect('mongodb://wender:123@ds141434.mlab.com:41434/cmakerdb?authMode=scram-sha1');
+
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.set('view engine', 'ejs');
+app.engine('html', require('ejs').renderFile);
 
 var port = process.env.PORT || 8080;        // set our port
 
@@ -36,17 +40,33 @@ router.use(function(req, res, next) {
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function(req, res) {
     //res.json({ message: 'hooray! welcome to our api!' });
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    res.write('<form action="tutorial" method="post" enctype="multipart/form-data">');
-    res.write('<input type="file" name="filetoupload"><br>');
-    res.write('Nome: <input type="text" name="name"><br>');
-    res.write('Categoria: <input type="text" name="categoria"><br>');
-    res.write('<input type="submit">');
-    res.write('</form>');
-    return res.end();
+    res.render('index.html');
 });
 
 //=========================================================================================================\\
+router.route('/gerenciarcategorias')
+    .get(function(req,res){
+        res.render('categoria.html');
+        /*res.writeHead(200, {'Content-Type': 'text/html'});
+        res.write('<form action="tutorial" method="post" enctype="multipart/form-data">');
+        res.write('<input type="file" name="filetoupload"><br>');
+        res.write('Nome: <input type="text" name="name"><br>');
+        res.write('Categoria: <input type="text" name="categoria"><br>');
+        res.write('<input type="submit">');
+        res.write('</form>');
+        return res.end();*/
+    });
+router.route('/gerenciartutoriais')
+    .get(function(req,res){
+        res.render('tutorial.html');
+
+    });
+router.route('/ajuda')
+    .get(function(req,res){
+        res.render('ajuda.html');
+
+    });
+
 router.route('/categoria')
 
 
@@ -54,7 +74,8 @@ router.route('/categoria')
 
         var categoria = new Categoria();
         categoria.name = req.body.name;
-
+        //console.log(categoria.name);
+        //res.json(categoria.name);
         categoria.save(function(err) {
             if (err)
                 res.send(err);
